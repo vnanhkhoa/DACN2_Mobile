@@ -1,8 +1,16 @@
 import 'package:appfood/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+import 'utils/real_time_socket.dart';
+
+void main() => runApp(
+  Provider(
+    create: (_) => RealTimeSocket(),
+    child: const MyApp(),
+    )
+  );
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -10,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+    RealTimeSocket realTimeSocket = Provider.of<RealTimeSocket>(context);
     return MaterialApp(
       theme: ThemeData(primaryColor: Colors.white),
       debugShowCheckedModeBanner: false,

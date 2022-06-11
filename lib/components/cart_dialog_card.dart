@@ -19,9 +19,7 @@ class CartDialogCard extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Card(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0)
-        )
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(15.0))),
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       elevation: 5,
       child: Row(
@@ -51,29 +49,38 @@ class CartDialogCard extends StatelessWidget {
                     data.title,
                     style: const TextStyle(
                         fontSize: 25,
-                        fontWeight: FontWeight.bold, color: lightGray),
+                        fontWeight: FontWeight.bold,
+                        color: lightGray),
                   ),
                   RichText(
                     text: TextSpan(
-                        text: "\$ ",
+                        text: NumberFormat.decimalPattern().format(data.price),
                         style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: primarycolor),
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: black
+                        ),
                         children: [
-                          TextSpan(
-                              text: data.price.toString(),
-                              style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: black))
+                          WidgetSpan(
+                            child: Transform.translate(
+                              offset: const Offset(0.0, -7.0),
+                              child: const Text(
+                                ' đ',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                  color: primarycolor,
+                                ),
+                              ),
+                            ),
+                          ),
                         ]),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
-                    width: size.width*0.3,
+                    width: size.width * 0.3,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

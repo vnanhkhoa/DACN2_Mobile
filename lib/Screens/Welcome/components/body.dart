@@ -28,7 +28,7 @@ class _BodyState extends State<Body> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            "WELCOME TO WEO",
+            "WELCOME TO GO FOOD",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),

@@ -1,5 +1,8 @@
 import 'package:appfood/style.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../../../utils/white_box.dart';
 
 class ItemBill extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -17,8 +20,18 @@ class ItemBill extends StatelessWidget {
         itemBuilder: (context, index) {
           return Card(
             elevation: 10,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    color: () {
+                      if (items[index].status == "Accepted") {
+                        return Colors.green;
+                      } else if (items[index].status == "Rejected") {
+                        return Colors.red;
+                      }
+                      return Colors.yellow;
+                    }(),
+                    width: 1),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: Padding(
               padding: const EdgeInsets.all(10),
@@ -34,8 +47,7 @@ class ItemBill extends StatelessWidget {
                               items[index].image.replaceAllMapped(
                                   RegExp(r'\\'), (match) => '/'),
                           fit: BoxFit.cover,
-                        )
-                      ),
+                        )),
                   ),
                   Expanded(
                     child: Row(
@@ -53,14 +65,32 @@ class ItemBill extends StatelessWidget {
                                   style: const TextStyle(
                                     color: black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: 18,
                                   ),
                                 ),
-                                Text(
-                                  "\$ " + items[index].price.toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: black),
+                                const WhiteBox(5),
+                                RichText(
+                                  text: TextSpan(
+                                      text: NumberFormat.decimalPattern()
+                                          .format(items[index].price),
+                                      style: const TextStyle(
+                                        color: black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      children: [
+                                        WidgetSpan(
+                                          child: Transform.translate(
+                                            offset: const Offset(0.0, -7.0),
+                                            child: const Text(
+                                              ' đ',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                color: black,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
                                 ),
                               ],
                             ),

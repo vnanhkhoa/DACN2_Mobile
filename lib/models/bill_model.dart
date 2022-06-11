@@ -4,7 +4,6 @@ class Bill {
   final List<Miniproduct> products;
   final int total;
   final String customerId;
-  
 
   Bill({required this.products, required this.total, required this.customerId});
 
@@ -12,7 +11,6 @@ class Bill {
         'products': products,
         'total': total,
         'customerId': customerId,
-
       };
 
   static Map<String, dynamic> toMap(Bill bill) => {
@@ -21,10 +19,8 @@ class Bill {
         'customerId': bill.customerId,
       };
   static String encode(List<Bill> bills) => jsonEncode(
-  bills
-      .map<Map<String, dynamic>>((bill) => Bill.toMap(bill))
-      .toList(),
-);
+        bills.map<Map<String, dynamic>>((bill) => Bill.toMap(bill)).toList(),
+      );
 }
 
 class Miniproduct {
@@ -42,7 +38,6 @@ class Miniproduct {
         'productId': productId,
         'quantity': quantity,
         'price': price,
-
       };
 
   static Map<String, dynamic> toMap(Miniproduct product) => {
@@ -50,5 +45,4 @@ class Miniproduct {
         'quantity': product.quantity,
         'price': product.price,
       };
-
 }

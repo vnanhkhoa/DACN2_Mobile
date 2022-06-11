@@ -7,9 +7,13 @@ import 'package:appfood/components/roundedbutton.dart';
 import 'package:appfood/models/bill_model.dart';
 import 'package:appfood/models/cart_model.dart';
 import 'package:appfood/services/preferences_service.dart';
+import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:appfood/style.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+
+import '../utils/real_time_socket.dart';
 
 class CartDialog extends StatefulWidget {
   const CartDialog({
@@ -23,6 +27,7 @@ class CartDialog extends StatefulWidget {
 
 class _CartDialogState extends State<CartDialog> {
   final _preferencesService = PreferencesService();
+  IO.Socket? socket;
   List<CartItem> data = [];
 
   @override
@@ -40,6 +45,11 @@ class _CartDialogState extends State<CartDialog> {
 
   @override
   Widget build(BuildContext context) {
+    RealTimeSocket realTimeSocket = Provider.of<RealTimeSocket>(context);
+    if (!realTimeSocket.isConnected()) {
+      realTimeSocket.initSocket();
+    }
+    socket = realTimeSocket.getSocket();
     int total = 0;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,27 +167,46 @@ class _CartDialogState extends State<CartDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Total",
+                        "Tổng Cộng",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: dolar,
                             fontSize: 20),
                       ),
-                      Text(
-                        () {
-                          for (int i = 0; i < data.length; i++) {
-                            total = total + data[i].price * data[i].quantity;
-                          }
-                          return "\$ ${NumberFormat.decimalPattern().format(total)}";
-                        }(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: dolar,
-                            fontSize: 20),
+                      RichText(
+                        text: TextSpan(
+                            text: () {
+                              for (int i = 0; i < data.length; i++) {
+                                total =
+                                    total + data[i].price * data[i].quantity;
+                              }
+                              return NumberFormat.decimalPattern()
+                                  .format(total);
+                            }(),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: dolar,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: [
+                              WidgetSpan(
+                                child: Transform.translate(
+                                  offset: const Offset(0.0, -7.0),
+                                  child: const Text(
+                                    ' đ',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      color: dolar,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]),
                       ),
                     ]),
                 RoundedButton(
-                  text: "Pay",
+                  text: "Thanh Toán",
                   press: () {
                     postData(context);
                   },
@@ -188,45 +217,48 @@ class _CartDialogState extends State<CartDialog> {
       ],
     );
   }
-}
 
-Future postData(BuildContext context) async {
-  final _preferences = PreferencesService();
-  List<CartItem> data = await _preferences.getSettings();
-  List<Miniproduct> products = [];
-  int total = 0;
-  if (data.isNotEmpty) {
-    for (var i = 0; i < data.length; i++) {
-      products.add(Miniproduct(
-          productId: data[i].id,
-          quantity: data[i].quantity,
-          price: data[i].price));
-      total = total + data[i].price * data[i].quantity;
-    }
-    final Set token = await _preferences.getToken();
-    final Bill bill =
-        Bill(customerId: token.elementAt(1), products: products, total: total);
-    List<Bill> list = [bill];
-    // ignore: unrelated_type_equality_checks
-    if (token != "") {
-      final Uri apiURL = Uri.http(urlServer, "api/bill");
-      final response = await http.post(apiURL,
-          headers: {
-            "Content-Type": "application/json",
-            HttpHeaders.authorizationHeader: "Bearer " + token.elementAt(0)
-          },
-          body: Bill.encode(list).substring(1, Bill.encode(list).length - 1));
-      final String responseString = response.body;
-      Map result = jsonDecode(responseString);
+  Future postData(BuildContext context) async {
+    final _preferences = PreferencesService();
+    List<CartItem> data = await _preferences.getSettings();
+    List<Miniproduct> products = [];
+    List<String> ids = [];
+    int total = 0;
+    if (data.isNotEmpty) {
+      for (var i = 0; i < data.length; i++) {
+        ids.add(data[i].id);
+        products.add(Miniproduct(
+            productId: data[i].id,
+            quantity: data[i].quantity,
+            price: data[i].price));
+        total = total + data[i].price * data[i].quantity;
+      }
+      final Set token = await _preferences.getToken();
+      final Bill bill = Bill(
+          customerId: token.elementAt(1), products: products, total: total);
+      List<Bill> list = [bill];
+      // ignore: unrelated_type_equality_checks
+      if (token != "") {
+        final Uri apiURL = Uri.http(urlServer, "api/bill");
+        final response = await http.post(apiURL,
+            headers: {
+              "Content-Type": "application/json",
+              HttpHeaders.authorizationHeader: "Bearer " + token.elementAt(0)
+            },
+            body: Bill.encode(list).substring(1, Bill.encode(list).length - 1));
+        final String responseString = response.body;
+        Map result = jsonDecode(responseString);
 
-      if (result["success"]) _preferences.removeCart();
+        if (result["success"]) _preferences.removeCart();
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(result["message"]),
-      ));
-      Navigator.pop(context);
-    } else {
-      Navigator.of(context).pushNamed("/login");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(result["message"]),
+        ));
+        socket!.emit('pay', jsonEncode(ids));
+        Navigator.pop(context);
+      } else {
+        Navigator.of(context).pushNamed("/login");
+      }
     }
   }
 }

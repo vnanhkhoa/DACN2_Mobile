@@ -103,6 +103,8 @@ class PreferencesService {
     late List<CartItem> cartitems;
     try {
       final preferences = await SharedPreferences.getInstance();
+      // ignore: unnecessary_null_comparison
+      if (preferences == null) return [];
       final String? cartsString = preferences.getString("Cart_key");
       if (cartsString == null) return [];
       cartitems = CartItem.decode(cartsString);

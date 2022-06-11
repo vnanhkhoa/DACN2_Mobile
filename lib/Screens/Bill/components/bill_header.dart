@@ -3,7 +3,6 @@ import 'package:appfood/style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 class BodyCardHeader extends StatelessWidget {
   const BodyCardHeader({
     Key? key,
@@ -42,12 +41,28 @@ class BodyCardHeader extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                "Total: \$" + item.total.toString(),
-                style: const TextStyle(
-                  color: black,
-                  fontWeight: FontWeight.bold,
-                ),
+              RichText(
+                text: TextSpan(
+                    text: "Total: " +
+                        NumberFormat.decimalPattern().format(item.total),
+                    style: const TextStyle(
+                      color: black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: [
+                      WidgetSpan(
+                        child: Transform.translate(
+                          offset: const Offset(0.0, -7.0),
+                          child: const Text(
+                            ' đ',
+                            style: TextStyle(
+                              color: black,
+                              fontSize: 10.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
               ),
             ]),
             Container(
@@ -57,11 +72,13 @@ class BodyCardHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      (item.status == "Waiting") ? "Waiting" : "Success",
+                      item.status,
                       style: TextStyle(
                           color: () {
-                            if (item.status == "Success") {
+                            if (item.status == "Accepted") {
                               return Colors.green;
+                            } else if (item.status == "Rejected") {
+                              return Colors.red;
                             }
                             return Colors.yellow;
                           }(),

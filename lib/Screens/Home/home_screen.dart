@@ -3,9 +3,11 @@ import 'package:appfood/Screens/Bill/bill_screen.dart';
 import 'package:appfood/Screens/Home/components/floatingbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:appfood/Screens/Home/components/body.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/preferences_service.dart';
-import 'components/bottom_navigation.dart';
+import '../../utils/real_time_socket.dart';
+import 'components/bottom_navigation.dart'; 
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreen extends State<HomeScreen> {
   int index = 0;
   final pre = PreferencesService();
+  
 
   @override
   initState() {
@@ -30,6 +33,8 @@ class _HomeScreen extends State<HomeScreen> {
       Navigator.pushNamedAndRemoveUntil(context, "/welcome", (route) => false);
     }
   }
+
+  
 
   final items = [
     const Icon(Icons.home),

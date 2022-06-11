@@ -70,21 +70,26 @@ class ProductComponent extends StatelessWidget {
             const WhiteBox(5),
             RichText(
               text: TextSpan(
-                  text: "\$ ",
+                  text: NumberFormat.decimalPattern().format(product.price),
                   style: const TextStyle(
                     fontSize: 19,
                     color: dolar,
                     fontWeight: FontWeight.bold,
                   ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: NumberFormat.decimalPattern().format(product.price),
-                      style: const TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: black,
+                  children: [
+                    WidgetSpan(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -7.0),
+                        child: const Text(
+                          ' đ',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            color: dolar,
+                          ),
+                        ),
                       ),
-                    )
+                    ),
                   ]),
             ),
             const WhiteBox(5),

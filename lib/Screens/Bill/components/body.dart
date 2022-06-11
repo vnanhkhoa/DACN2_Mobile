@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:appfood/style.dart';
 import 'package:appfood/Screens/Bill/components/background.dart';
 import 'package:appfood/models/bill_history_model.dart';
+import 'package:provider/provider.dart';
 // ignore: library_prefixes
-import 'package:socket_io_client/socket_io_client.dart' as IO; 
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../../../utils/real_time_socket.dart';
 import 'bill_dialog.dart';
 import 'bill_header.dart';
 
@@ -18,31 +20,31 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   late IO.Socket socket;
-  Future initSocket() async {
-    try {
-      socket = IO.io('http://'+urlServer,
-          IO.OptionBuilder().setTransports(['websocket'])
-              .build());
 
-      socket.onConnect((_) {
-        // ignore: avoid_print
-        print('connect '+ socket.id.toString());
-        
-      });
-    } catch (e) {
-      // ignore: avoid_print
-      print(e);
-    }
-  }
+  var i = 0;
 
   @override
   void initState() {
     super.initState();
-    initSocket();
+  }
+
+  Future initSocket(RealTimeSocket realTimeSocket) async {
+    if (!realTimeSocket.isConnected()) {
+      realTimeSocket.initSocket();
+    }
+    socket = realTimeSocket.getSocket();
+    socket.on("reload", (data) {
+      while (mounted) {
+        setState(() {});
+        break;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    RealTimeSocket realTimeSocket = Provider.of<RealTimeSocket>(context);
+    initSocket(realTimeSocket);
     return Background(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -133,5 +135,9 @@ class _BodyState extends State<Body> {
         ],
       ),
     );
+  }
+
+  void setStateIfMounted(f) {
+    if (mounted) setState(f);
   }
 }

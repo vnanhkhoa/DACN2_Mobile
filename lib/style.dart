@@ -15,4 +15,5 @@ const borderColor = Color.fromARGB(100, 130, 111, 111);
 const shadowColor = Color.fromRGBO(130, 111, 111, 0.5);
 const accountButtonActive = Color.fromARGB(255, 51, 65, 72);
 
-const urlServer = 'dacn-web-api.herokuapp.com';
+const urlServer = '192.168.0.2:1201';
+// const urlServer = 'dacn-web-api.herokuapp.com';
