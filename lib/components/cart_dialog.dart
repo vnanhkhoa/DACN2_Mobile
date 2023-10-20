@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:appfood/components/cart_dialog_card.dart';
 import 'package:appfood/components/cart_info_cart.dart';
-import 'package:appfood/components/roundedbutton.dart';
+import 'package:appfood/components/rounded_button.dart';
 import 'package:appfood/models/bill_model.dart';
 import 'package:appfood/models/cart_model.dart';
 import 'package:appfood/services/preferences_service.dart';
@@ -116,11 +116,11 @@ class _CartDialogState extends State<CartDialog> {
                         background: Container(
                           margin: const EdgeInsets.symmetric(vertical: 10.0),
                           color: Colors.red,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 16),
+                          child: const Padding(
+                            padding: EdgeInsets.only(right: 16),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: const [
+                              children: [
                                 Icon(
                                   Icons.delete,
                                   size: 30,

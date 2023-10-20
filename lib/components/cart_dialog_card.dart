@@ -69,7 +69,7 @@ class CartDialogCard extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.normal,
-                                  color: primarycolor,
+                                  color: primaryColor,
                                 ),
                               ),
                             ),

@@ -9,7 +9,7 @@ class RealTimeSocket {
   var id = "";
   bool connected = false;
 
-  RealTimeSocket() {
+  RealTimeSocket() { 
     initSocket();
   }
 
@@ -27,7 +27,6 @@ class RealTimeSocket {
 
       socket.onConnect((_) {
         connected = true;
-        print("Connect " + socket.id.toString());
         socket.emit('getUser', id);
       });
     } catch (e) {

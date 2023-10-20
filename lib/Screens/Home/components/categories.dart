@@ -62,7 +62,7 @@ class Category extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30.0),
         child: Container(
-          color: primarycolor,
+          color: primaryColor,
           child: IntrinsicHeight(
             child: GestureDetector(
               onTap: () {
@@ -87,14 +87,14 @@ class Category extends StatelessWidget {
                       ),
                     ),
                   ),
-                  IntrinsicHeight(
+                  const IntrinsicHeight(
                     child: Padding(
-                      padding: const EdgeInsets.only(
+                      padding: EdgeInsets.only(
                         right: 15,
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: const <Widget>[
+                        children: <Widget>[
                           Text(
                             'Burger',
                             style: TextStyle(

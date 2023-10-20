@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:appfood/Screens/Welcome/components/background.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:appfood/components/roundedbutton.dart';
+import 'package:appfood/components/rounded_button.dart';
 import 'package:appfood/style.dart';
 
 class Body extends StatefulWidget {

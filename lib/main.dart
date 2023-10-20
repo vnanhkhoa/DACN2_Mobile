@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     RealTimeSocket realTimeSocket = Provider.of<RealTimeSocket>(context);
+    realTimeSocket.initSocket();
     return MaterialApp(
       theme: ThemeData(primaryColor: Colors.white),
       debugShowCheckedModeBanner: false,

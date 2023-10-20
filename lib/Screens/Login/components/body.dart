@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:appfood/components/already_have_an_account.dart';
 import 'package:appfood/components/rounded_input_field.dart';
 import 'package:appfood/components/rounded_password_field.dart';
-import 'package:appfood/components/roundedbutton.dart';
+import 'package:appfood/components/rounded_button.dart';
 import 'package:appfood/models/user_model.dart';
 import 'package:appfood/services/preferences_service.dart';
 import 'package:http/http.dart' as http;

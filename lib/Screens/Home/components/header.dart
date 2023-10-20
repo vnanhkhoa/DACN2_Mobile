@@ -35,7 +35,7 @@ class Header extends StatelessWidget {
                         TextSpan(
                             text: 'Food',
                             style: TextStyle(
-                              color: primarycolor,
+                              color: primaryColor,
                             ))
                       ])),
             ),
@@ -46,7 +46,7 @@ class Header extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0)),
-                primary: primarycolor,
+                backgroundColor: primaryColor,
               ),
               child: const Text(
                 'Order Now',

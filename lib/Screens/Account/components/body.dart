@@ -82,8 +82,8 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
-            Column(
-              children: const [
+            const Column(
+              children: [
                 AccountInfoCard(
                     icon: Icons.alarm, color: Colors.yellow, text: "time"),
                 AccountInfoCard(

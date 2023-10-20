@@ -72,7 +72,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(30),
                       child: Container(
-                        color: primarycolor,
+                        color: primaryColor,
                         width: 180,
                         height: 46,
                         child: Row(
@@ -123,7 +123,7 @@ class _ItemDetailState extends State<ItemDetail> {
                               text: TextSpan(
                                 text: "\$ ",
                                 style: const TextStyle(
-                                    color: primarycolor, fontSize: 30),
+                                    color: primaryColor, fontSize: 30),
                                 children: [
                                   TextSpan(
                                     text: NumberFormat.decimalPattern()
@@ -149,7 +149,7 @@ class _ItemDetailState extends State<ItemDetail> {
                         children: [
                           iconScore("4.8", "star.png", Colors.yellow),
                           iconScore("150 Kcal", "fire.png", Colors.orange[900]),
-                          iconScore("10 - 15 min", "clock.png", primarycolor)
+                          iconScore("10 - 15 min", "clock.png", primaryColor)
                         ],
                       ),
                     ),
@@ -177,7 +177,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           maximumSize: const Size(250.0, 54.0),
-                          primary: primarycolor,
+                          backgroundColor: primaryColor,
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(30)))),
@@ -191,12 +191,12 @@ class _ItemDetailState extends State<ItemDetail> {
                             _quantity);
                         _saveSettings(cartItem);
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text(
                               "Add To Cart",
                               style: TextStyle(fontSize: 16, color: white),
@@ -220,14 +220,14 @@ class _ItemDetailState extends State<ItemDetail> {
         ));
   }
 
-  void _saveSettings(CartItem cartitem) {
+  void _saveSettings(CartItem cartItem) {
     try {
-      String id = cartitem.id;
-      String title = cartitem.title;
-      String image = cartitem.image;
-      String description = cartitem.description;
-      int quantity = cartitem.quantity;
-      int price = cartitem.price;
+      String id = cartItem.id;
+      String title = cartItem.title;
+      String image = cartItem.image;
+      String description = cartItem.description;
+      int quantity = cartItem.quantity;
+      int price = cartItem.price;
       final newSettings =
           CartItem(id, title, image, description, price, quantity);
 
